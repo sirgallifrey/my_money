@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+    db:
+        image: postgres:16.2
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=my_money_dev
+
+    dbgate:
+        image: dbgate/dbgate
+        restart: always
+        ports:
+            - 4009:3000
+        volumes:
+            - dbgate-data:/root/.dbgate
+        environment:
+            CONNECTIONS: con1
+
+            LABEL_con1: my_money_dev
+            SERVER_con1: db
+            USER_con1: postgres
+            PASSWORD_con1: password
+            PORT_con1: 5432
+            ENGINE_con1: postgres@dbgate-plugin-postgres
+
+volumes:
+    dbgate-data:
+        driver: local
