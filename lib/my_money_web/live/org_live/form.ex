@@ -14,7 +14,7 @@ defmodule MyMoneyWeb.OrgLive.Form do
         <:subtitle>Use this form to manage org records in your database.</:subtitle>
       </.header>
 
-      <.form for={@form} id="org-form" phx-change="validate" phx-submit="save">
+      <.form for={@form} id="org-form" phx-change="validate" phx-submit="save"> 
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:description]} type="text" label="Description" />
         <footer>

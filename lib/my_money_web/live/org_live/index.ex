@@ -4,6 +4,7 @@ defmodule MyMoneyWeb.OrgLive.Index do
 
   alias MyMoney.UserAccounts
   alias MyMoney.Orgs
+  import MyMoneyWeb.OrgLive.OrgComponents
 
   @impl true
   def render(assigns) do
@@ -18,28 +19,14 @@ defmodule MyMoneyWeb.OrgLive.Index do
         </:actions>
       </.header>
 
-      <.table
-        id="orgs"
-        rows={@streams.orgs}
-        row_click={fn {_id, org} -> JS.navigate(~p"/orgs/#{org}") end}
-      >
-        <:col :let={{_id, org}} label="Name">{org.name}</:col>
-        <:col :let={{_id, org}} label="Description">{org.description}</:col>
-        <:action :let={{_id, org}}>
-          <div class="sr-only">
-            <.link navigate={~p"/orgs/#{org}"}>Show</.link>
-          </div>
-          <.link navigate={~p"/orgs/#{org}/edit"}>Edit</.link>
-        </:action>
-        <:action :let={{id, org}}>
-          <.link
-            phx-click={JS.push("delete", value: %{id: org.id}) |> hide("##{id}")}
-            data-confirm="Are you sure?"
-          >
-            Delete
-          </.link>
-        </:action>
-      </.table>
+      <div :for={{_id, org} <- @streams.orgs}>
+        <.org_card
+          title={org.name}
+          description={org.description}
+          to={~p"/orgs/#{org}"}
+          action="Start"
+        />
+      </div>
     </Layouts.app>
     """
   end
